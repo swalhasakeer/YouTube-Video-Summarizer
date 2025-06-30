@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>YouTube Video Summarizer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 40px;
+      width: 100%;
+      max-width: 850px;
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+      color: white;
+      animation: fadeIn 1s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+      color: #ffeb3b;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-top: 20px;
+    }
+
+    input[type="text"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px 15px;
+      margin-top: 10px;
+      border-radius: 10px;
+      border: none;
+      font-size: 1rem;
+      background-color: rgba(255, 255, 255, 0.9);
+      color: #333;
+    }
+
+    input[type="submit"] {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(to right, #ff416c, #ff4b2b);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-top: 30px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
+    }
+
+    input[type="submit"]:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 20px rgba(255, 75, 43, 0.5);
+    }
+
+    textarea {
+      height: 200px;
+      margin-top: 15px;
+      resize: vertical;
+    }
+
+    .word-count {
+      text-align: right;
+      font-size: 0.9rem;
+      margin-top: 5px;
+      color: #ddd;
+    }
+
+    .download-btn {
+      display: block;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .download-btn a {
+      text-decoration: none;
+      padding: 12px 25px;
+      background: #4CAF50;
+      color: white;
+      border-radius: 10px;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+
+    .download-btn a:hover {
+      background: #43a047;
+    }
+
+    .spinner {
+      display: none;
+      margin: 20px auto;
+      border: 8px solid rgba(255, 255, 255, 0.3);
+      border-top: 8px solid #fff;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg);}
+      100% { transform: rotate(360deg);}
+    }
+
+    @media (max-width: 600px) {
+      .glass-card {
+        padding: 25px;
+      }
+
+      h2 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="glass-card">
+    <h2>🎬 YouTube Video Summarizer</h2>
+    <form method="post" onsubmit="showSpinner()">
+      <label for="url">🔗 Paste YouTube URL</label>
+      <input type="text" name="url" id="url" placeholder="e.g., https://www.youtube.com/watch?v=..." required />
+
+      <label for="method">🧠 Choose Summary Method</label>
+      <select name="method" id="method" required>
+        <option disabled selected>-- Select Method --</option>
+        <option value="TfIdf-Based">📊 TF-IDF Based</option>
+        <option value="Frequency-Based">📈 Frequency Based</option>
+        <option value="Spacy-Based">🧬 SpaCy Based</option>
+      </select>
+
+      <input type="submit" value="🚀 Generate Summary" />
+      <div class="spinner" id="spinner"></div>
+    </form>
+
+    {% if title %}
+      <h3>📌 Video Title:</h3>
+      <p><strong>{{ title }}</strong></p>
+    {% endif %}
+
+    {% if summary %}
+      <h3>📝 Summary:</h3>
+      <textarea readonly>{{ summary }}</textarea>
+      <div class="word-count">📏 Word Count: {{ summary.split()|length }}</div>
+      <div class="download-btn">
+        <a href="data:text/plain;charset=utf-8,{{ summary | urlencode }}" download="summary.txt">⬇️ Download Summary</a>
+      </div>
+    {% endif %}
+  </div>
+
+  <script>
+    function showSpinner() {
+      document.getElementById("spinner").style.display = "block";
+    }
+  </script>
+</body>
+</html>
