@@ -84,12 +84,35 @@ python app.py
 
 
 ---
+
+## 🐳 Run with Docker
+
+You can build and run this app using Docker.
+
+### 🔧 Build the Docker Image
+
+```bash
+docker build -t summarizer_app .
+```
+
+## ▶️ Run the Container
+```bash
+docker run -p 5000:5000 youtube-video-extractor
+```
+Visit http://localhost:5000 in your browser.
+
+## 🐳 Docker Repository link
+
+https://hub.docker.com/repository/docker/swalha/summarizer_app/general
+
+
 ## 📁 Folder Structure
 
 ```bash
 
 📂 youtube-video-summarizer/
 ├── app.py
+├── Dockerfile
 ├── summarizer.py
 ├── requirements.txt
 ├── templates/
